@@ -1,0 +1,172 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block nav %}
+<a href="{% url 'index' %}" class="nav-item nav-link ">Inicio</a>
+<a href="{% url 'team' %}" class="nav-item nav-link ">Productos</a>
+{% if user.is_authenticated and user.username == 'admin' %}
+<a href="{% url 'add' %}" class="nav-item nav-link">Agregar Productos</a>
+{% endif %}
+{% if user.is_authenticated %}
+<a href="{% url 'Carrito' %}" class=" nav-item nav-link active"><i class="fa fa-shopping-cart "></i></a>
+{% else %}
+<a onclick="NoIniciado()" class=" nav-item nav-link"><i class="fa fa-shopping-cart "></i></a>
+{% endif %}
+{% endblock %}
+
+
+{% block contenido %}
+
+
+<div class="container-xxl py-5 bg-dark hero-header mb-5">
+    <div class="container text-center my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Carrito</h1>
+    </div>
+</div>
+<div class="container">
+    <div class="row g-3">
+{% for aux in listaCarrito %}
+
+
+
+<div class="col-lg-4 col-md-6" >
+    <div class="card" style="height: 500px;">
+            <div class="rounded-circle overflow-hidden m-4">
+                {% if aux.imagen %}
+                <img class=" img" style="width: 320px;" src="{{ aux.imagen.url }}" alt="Colorlib Template">
+                {% else %}
+                <img class="img" style="width: 320px;" src="{% static 'core/img/id.jpg '%}" alt="">
+                {% endif %}
+
+            </div>
+            <div class="card-body">
+                <h4 class="mb-0">{{ aux.Nombre }}</h4>
+
+                
+
+                <a class="mb-0">${{ aux.precio }}</a>
+
+            </div>
+            
+            <a onclick="eliminarCarro({{ aux.id }})" class="btn btn-primary">ELIMINAR</a>
+
+    </div>
+    </div>
+
+    {% empty %}
+    <div class="col-lg-12 text-center">
+    <p>No se encontraron elementos en el carrito.</p>
+    </div>
+{% endfor %}
+{% include 'core/paginator.html' %}
+</div>
+</div>
+<br>
+<div class="col-lg-6">
+    <div class="pagar-item">
+        <h3>Total Carrito :</h3>
+        <ul>
+          <h5> Total: <span>${{ total_precio }}</span></h5> 
+        </ul>
+        <div class="">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="subject" placeholder="Subject">
+                <label for="subject">Direccion de entrega</label>
+            </div>
+        </div>
+
+        
+        {% if listaCarrito %}
+        <p><div id="btnpaypal"></div></p>
+        {% else %}
+        <form method="POST" action=""  ><a onclick="NoCarrito()" id="btnpaypal"></a></form>
+        {% endif %}
+    </div>
+</div>
+{% block js %}
+
+    <script src="http://www.paypalobjects.com/api/checkout.js"></script>
+    <script>
+        paypal.Button.render({
+            env: 'sandbox',
+            client:{
+                sandbox:'AbH3-GPxABHeRTQsxWESbeJgTnRZgFV1UZa3c3zRJpUW8tnizxXguXgEEFoNoxe2mxDi2g0WMDpgTIVH',
+                production: 'demo_production_client_id'
+
+
+            },
+            locale:'es_CL',
+            style:{
+                size:'large', //small, medium, large
+                color:'gold', //gold,black
+                shape:'rect',  //pill,rect
+
+            },
+            commit: true,
+            payment: function (data, actions) {
+                return actions.payment.create({
+                    transactions: [{
+                        amount:{
+                            total:'{{ valor }}', //MONTO A PAGAR
+                            currency: 'USD' //USD, CN
+                        }
+                    }]
+
+                });
+            },
+            onAuthorize: function(data, actions){
+                return actions.payment.execute().then(function(){
+                    Swal.fire({
+                        title: 'Compra Realizada',
+                        text: 'Su compra ha sido realizada exitosamente',
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Confirmar'
+                        }).then(function() {
+                        window.location.href = "/Finalcompra/";
+                    });
+
+
+
+                    //zona para implementar logica despues de pagar
+
+                });
+            },
+            onCancel(data){
+                Swal.fire({
+                        title: 'Transaccion Cancelada',
+                        text: 'El pago ha sido cancelado',
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Confirmar'
+                        }).then(function() {
+                        window.location.href = "/Carrito/";
+                    });
+
+            },
+            onError(err){
+                Swal.fire({
+                        title: 'Error Transaccion',
+                        text: 'Ha ocurrido un error',
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Confirmar'
+                        }).then(function() {
+                        window.location.href = "/Carrito/";
+                    });
+
+            },
+
+
+        }, '#btnpaypal');
+    </script>
+
+{% endblock %}
+
+
+
+
+<!-- Menu Start -->
+
+<!-- Menu End -->
+
+{% endblock %}
