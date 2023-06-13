@@ -64,9 +64,9 @@
             <div class="col-lg-6">
                 <h5 class="section-title ff-secondary text-start text-primary fw-normal">Perros</h5>
                 <h1 class="mb-4">Bienvenido a <i class="fa fa-paw me-3 text-primary me-2"></i>PerriPapitos</h1>
-                <p class="mb-4">PerriPapitos es una fundacion sin fines de lucro para ayudar a los
+                <p class="mb-4">PerriPapitos es una fundacion sin fines de lucro, para ayudar a los
                     perritos que viven en la calle o que han sido abandonados
-                    por sus dueños y no tienen donde comer ni dormir ni un hogar que les otorgue el cariño que merecen.
+                    por sus dueños, y no tienen donde comer, dormir, y tampoco tengan un hogar que les otorgue el cariño que merecen.
                 </p>
 
                 <div class="row g-4 mb-4">
@@ -135,13 +135,12 @@
                             <input type="hidden" name="precio_producto" id="precio_producto" value="{{ aux.precio }}">
                             <input type="hidden" name="imagen_producto" id="imagen_producto" value="{{ aux.imagen }}">
                             {% if user.is_authenticated %}
-                            <input type="submit" style="cursor: pointer;" value="Carrito" class="btn btn-primary">
+                            <input type="submit" style="cursor: pointer;" value="Carrito" class="btn btn-primary nav-item ">
                             {% else %}
-                            <a onclick="NoIniciado()" type="submit" style="cursor: pointer;" value="Carrito"
-                                class="btn btn-primary">CARRITO</a>
+                            <a onclick="NoIniciado()" type="submit" style="cursor: pointer;" value="Carrito" class="btn btn-primary">Carrito </a>
                             {% endif %}
                             <a href="{% url 'team' %}" type="submit" style="cursor: pointer;"
-                                class="btn btn-primary">Ver mas</a>
+                                class="btn btn-primary"><i class="fa fa-search"></i></a>
 
 
                         </form>

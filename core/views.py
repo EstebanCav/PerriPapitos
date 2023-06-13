@@ -3,10 +3,24 @@ from .models import * #asi llamamos a todos los models
 from .forms import *
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .serializers import *
 from rest_framework import viewsets
 import requests
+
+#FUNCION GENERICA QUE VALIDA EL GRUPO DEL USUARIO
+def grupo_requerido(nombre_grupo):
+    def decorator(view_fuc):
+        @user_passes_test(lambda user: user.groups.filter(name=nombre_grupo).exists())
+        def wrapper(request, *arg, **kwargs):
+            return view_fuc(request, *arg, **kwargs)
+        return wrapper
+    return decorator
+
+#@grupo_requerido('vendedor')
+# CUANDO CREAN EN USUARIO LO ASIGNA INMEDIATAMENTE AL GRUPO
+# grupo = Group.objects.get(name='cliente')
+# user.groups.add(grupo)
 
 #NOS PERMITE MOSTRAR LA INFO
 class ProductoViewset(viewsets.ModelViewSet):
@@ -44,7 +58,7 @@ def index(request):
         Carrito.save()
         
     return render(request,'core/index.html', data)
-
+@grupo_requerido('vendedor')
 def indexapi(request):
     #OBTIENE LOS DATOS DEL API
     respuesta = requests.get('http://127.0.0.1:8000/api/productos/')
@@ -74,7 +88,7 @@ def Registrar(request):
 
     return render(request, 'registration/Registrar.html')
 
-@login_required
+@grupo_requerido('vendedor')
 def add(request):
     data={
         'form' : ProductoForm()
@@ -87,7 +101,7 @@ def add(request):
             messages.success(request, "Producto almacenado correctamente")
 
     return render(request,'core/add-product.html', data)
-@login_required
+@grupo_requerido('vendedor')
 def update(request, id):
     producto = Producto.objects.get(id=id) #OBTIENE UN PRODUCTO POR EL ID
     data={
@@ -103,7 +117,7 @@ def update(request, id):
 
     return render(request,'core/add-product.html', data)
 
-@login_required
+@grupo_requerido('vendedor')
 def delete(request,id):
     producto = Producto.objects.get(id=id) #OBTIENE UN PRODUCTO POR EL ID
     producto.delete()
