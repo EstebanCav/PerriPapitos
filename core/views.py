@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from .serializers import *
 from rest_framework import viewsets
 import requests
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import Group
 
 #FUNCION GENERICA QUE VALIDA EL GRUPO DEL USUARIO
 def grupo_requerido(nombre_grupo):
@@ -85,8 +87,23 @@ def indexapi(request):
 #CRUD
 
 def Registrar(request):
+    data = {
+        'form': CustomUserCreationForm()
+    }
 
-    return render(request, 'registration/Registrar.html')
+    if request.method =='POST':
+        formulario = CustomUserCreationForm(data=request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            user = authenticate(username=formulario.cleaned_data["username"], password=formulario.cleaned_data["password1"])
+            grupo = Group.objects.get(name='cliente')
+            user.groups.add(grupo)
+            login(request, user)
+            messages.success(request, "Te has registrado correctamente")
+            return redirect(to="index")
+        data["form"] = formulario
+
+    return render(request, 'registration/Registrar.html', data)
 
 @grupo_requerido('vendedor')
 def add(request):
@@ -101,6 +118,7 @@ def add(request):
             messages.success(request, "Producto almacenado correctamente")
 
     return render(request,'core/add-product.html', data)
+
 @grupo_requerido('vendedor')
 def update(request, id):
     producto = Producto.objects.get(id=id) #OBTIENE UN PRODUCTO POR EL ID
@@ -124,6 +142,7 @@ def delete(request,id):
 
     return redirect(to='index')
 
+@grupo_requerido('cliente')
 def Carrito(request):
     Carrito = item_carrito.objects.all()
     total_precio = sum(item.precio for item in Carrito)
