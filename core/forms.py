@@ -2,8 +2,10 @@
 from django import forms
 from django.forms import ModelForm
 from .models import *
+from django.contrib.auth.forms import UserCreationForm
 
 class ProductoForm(ModelForm):
+
     Nombre = forms.CharField(widget=forms.TextInput(attrs={"placeholder":"Ingrese Nombre"}))
     precio = forms.IntegerField(min_value=1,widget=forms.NumberInput(attrs={"placeholder":"Ingrese Precio"}))
     Stock = forms.IntegerField(min_value=1,widget=forms.NumberInput(attrs={"placeholder":"Ingrese Stock"}))
@@ -19,4 +21,7 @@ class ProductoForm(ModelForm):
         widgets = {
             'Fecha_creacion' : forms.SelectDateWidget(years=range(1940,20024))
         }
-        
+
+
+class CustomUserCreationForm(UserCreationForm):
+    pass       

@@ -63,108 +63,17 @@
 <br>
 <div class="col-lg-6">
     <div class="pagar-item">
-        <h3>Total Carrito :</h3>
-        <ul>
-          <h5> Total: <span>${{ total_precio }}</span></h5> 
-        </ul>
-        <div class="">
-            <div class="form-floating">
-                <input type="text" class="form-control" id="subject" placeholder="Subject">
-                <label for="subject">Direccion de entrega</label>
-            </div>
-        </div>
+        <h3>Total Carrito : ${{ total_precio }}</h3>
 
         
         {% if listaCarrito %}
-        <p><div id="btnpaypal"></div></p>
+        <form method="POST" action=""  ><a href=" {% url 'Pagar' %} " class="btn btn-primary py-sm-3 px-sm-5 me-3">Información de pago</a></form>
         {% else %}
-        <form method="POST" action=""  ><a onclick="NoCarrito()" id="btnpaypal"></a></form>
+        <form method="POST" action=""  ><a onclick="NoCarrito()" class="btn btn-primary py-sm-3 px-sm-5 me-3">Información de pago</a></form>
+
         {% endif %}
     </div>
 </div>
-{% block js %}
-
-    <script src="http://www.paypalobjects.com/api/checkout.js"></script>
-    <script>
-        paypal.Button.render({
-            env: 'sandbox',
-            client:{
-                sandbox:'AbH3-GPxABHeRTQsxWESbeJgTnRZgFV1UZa3c3zRJpUW8tnizxXguXgEEFoNoxe2mxDi2g0WMDpgTIVH',
-                production: 'demo_production_client_id'
-
-
-            },
-            locale:'es_CL',
-            style:{
-                size:'large', //small, medium, large
-                color:'gold', //gold,black
-                shape:'rect',  //pill,rect
-
-            },
-            commit: true,
-            payment: function (data, actions) {
-                return actions.payment.create({
-                    transactions: [{
-                        amount:{
-                            total:'{{ valor }}', //MONTO A PAGAR
-                            currency: 'USD' //USD, CN
-                        }
-                    }]
-
-                });
-            },
-            onAuthorize: function(data, actions){
-                return actions.payment.execute().then(function(){
-                    Swal.fire({
-                        title: 'Compra Realizada',
-                        text: 'Su compra ha sido realizada exitosamente',
-                        icon: 'success',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Confirmar'
-                        }).then(function() {
-                        window.location.href = "/Finalcompra/";
-                    });
-
-
-
-                    //zona para implementar logica despues de pagar
-
-                });
-            },
-            onCancel(data){
-                Swal.fire({
-                        title: 'Transaccion Cancelada',
-                        text: 'El pago ha sido cancelado',
-                        icon: 'success',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Confirmar'
-                        }).then(function() {
-                        window.location.href = "/Carrito/";
-                    });
-
-            },
-            onError(err){
-                Swal.fire({
-                        title: 'Error Transaccion',
-                        text: 'Ha ocurrido un error',
-                        icon: 'error',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Confirmar'
-                        }).then(function() {
-                        window.location.href = "/Carrito/";
-                    });
-
-            },
-
-
-        }, '#btnpaypal');
-    </script>
-
-{% endblock %}
-
-
-
-
 <!-- Menu Start -->
 
 <!-- Menu End -->
