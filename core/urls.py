@@ -28,6 +28,13 @@ urlpatterns = [
     path('suscribirse/',suscribirse,name='suscribirse'),
     path('Finalcompra/',Finalcompra,name='Finalcompra'),
     path('FinalSuscripcion/',FinalSuscripcion,name='FinalSuscripcion'),
+    path('suscripcion/',suscripcion,name='suscripcion'),
+    path('suscripcionAdmin/',suscripcionAdmin,name='suscripcionAdmin'),
+    path('addSuscripcion/<id>/', addSuscripcion, name='addSuscripcion'),
+    path('deleteSuscripcion/<id>/', deleteSuscripcion, name='deleteSuscripcion'),
+    path('updateSuscripcion/<id>/',updateSuscripcion,name='updateSuscripcion'),
+
+
 
     
 

@@ -21,7 +21,7 @@ def grupo_requerido(nombre_grupo):
 
 #@grupo_requerido('vendedor')
 # CUANDO CREAN EN USUARIO LO ASIGNA INMEDIATAMENTE AL GRUPO
-# grupo = Group.objects.get(name='cliente')
+# grupo = Group.objects.get(name='usuario')
 # user.groups.add(grupo)
 
 #NOS PERMITE MOSTRAR LA INFO
@@ -96,7 +96,7 @@ def Registrar(request):
         if formulario.is_valid():
             formulario.save()
             user = authenticate(username=formulario.cleaned_data["username"], password=formulario.cleaned_data["password1"])
-            grupo = Group.objects.get(name='cliente')
+            grupo = Group.objects.get(name='usuario')
             user.groups.add(grupo)
             login(request, user)
             messages.success(request, "Te has registrado correctamente")
@@ -221,6 +221,66 @@ def team(request):
     return render(request,'core/team.html', data)
 
     ##suscripcion
+def suscripcion(request):
+    primer_nivel= TipoSuscripcion.objects.get(id=1)
+    segundo_nivel = TipoSuscripcion.objects.get(id=2)
+    tercer_nivel = TipoSuscripcion.objects.get(id=3)
+    
+    try:
+        suscripcionUsuario = Suscripcion.objects.filter(usuario=request.user).first()
+    except Suscripcion.DoesNotExist:
+        suscripcionUsuario = None
+
+    data = {
+        'primer_nivel': primer_nivel,
+        'segundo_nivel': segundo_nivel,
+        'tercer_nivel' : tercer_nivel,
+        'suscripcionUsuario'  : suscripcionUsuario
+
+    }
+    return render(request, 'core/suscripcion.html', data)
+
+
+def suscripcionAdmin(request):
+    primer_nivel= TipoSuscripcion.objects.get(id=1)
+    segundo_nivel = TipoSuscripcion.objects.get(id=2)
+    tercer_nivel = TipoSuscripcion.objects.get(id=3)
+    
+    try:
+        suscripcionUsuario = Suscripcion.objects.filter(usuario=request.user).first()
+    except Suscripcion.DoesNotExist:
+        suscripcionUsuario = None
+
+    data = {
+        'primer_nivel': primer_nivel,
+        'segundo_nivel': segundo_nivel,
+        'tercer_nivel' : tercer_nivel,
+        'suscripcionUsuario'  : suscripcionUsuario.usuario.username if suscripcionUsuario else None
+
+    }
+    return render(request, 'core/suscripcionAdmin.html', data)
+
+####### CRUD Suscripciones#############
+def addSuscripcion(request, id):
+    usuario = request.user
+    tipoSuscripcion = TipoSuscripcion.objects.get(id=id)
+    suscripcionUsuario = Suscripcion.objects.create(usuario=usuario, suscripcion=tipoSuscripcion)
+    return redirect('suscripcion')
+
+def deleteSuscripcion(request, id):
+    suscripcionUsuario = Suscripcion.objects.filter(usuario=request.user).first()
+    if suscripcionUsuario:
+        suscripcionUsuario.delete()
+    return redirect('suscripcion')
+
+def updateSuscripcion(request, id):
+    suscripcionUsuario = Suscripcion.objects.filter(usuario=request.user).first()
+    if suscripcionUsuario:
+        tipoSuscripcion = TipoSuscripcion.objects.get(id=id)
+        suscripcionUsuario.suscripcion = tipoSuscripcion
+        suscripcionUsuario.save()
+    return redirect('suscripcion')
+####################FIN ############
 
 def suscribirse(request):
 
