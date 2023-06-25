@@ -1,0 +1,115 @@
+{% extends 'core/base.html' %}
+{% load static%}
+
+{% block css %}
+  
+{% endblock %}
+
+{% block contenido %}
+
+<br>
+<br>
+
+<div class="container">
+    <div class="p-3 pb-md-4 mx-auto text-center">
+      <h1 class="display-4 fw-normal">Suscribete</h1>
+      <p class="fs-5 text-muted">Bienvenido a la seccion de Suscripciones, aqui puedes elegir el tipo de suscripcion que desees tener,
+        recuerda que cada suscripcion te otorga diferentes beneficios, además estarás ayudando a los PerriPapitos.
+      </p>
+    </div>
+    {% if suscripcionUsuario == none %}
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm border-secondary">
+          <div class="card-header py-3 bg-secondary">
+            <h4 class="my-0 fw-normal">{{primer_nivel.nombre}}</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">${{primer_nivel.precio}}<small class="text-muted fw-light"></small></h1>
+            <a onclick="ComprarSuscripcion({{ primer_nivel.id }})" type="button" class="w-100 btn btn-lg btn-outline-secondary mt-4">Elegir</a>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm border-primary">
+          <div class="card-header py-3 text-white bg-primary border-primary">
+            <h4 class="my-0 fw-normal">{{segundo_nivel.nombre}}</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">${{segundo_nivel.precio}}<small class="text-muted fw-light">/mes</small></h1>
+            <a onclick="ComprarSuscripcion({{ segundo_nivel.id }})" type="button" class="w-100 btn btn-lg btn-outline-primary mt-4">Elegir</a>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm border-info">
+          <div class="card-header py-3 bg-info text-white border-info">
+            <h4 class="my-0 fw-normal">{{tercer_nivel.nombre}}</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">${{tercer_nivel.precio}}<small class="text-muted fw-light">/mes</small></h1>
+            <a onclick="ComprarSuscripcion({{ tercer_nivel.id }})" type="button" class="w-100 btn btn-lg btn-outline-info mt-4">Elegir</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% elif suscripcionUsuario.suscripcion.nombre == primer_nivel.nombre  %}
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-content-center align-items-center">
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">{{primer_nivel.nombre}}</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">${{primer_nivel.precio}}<small class="text-muted fw-light">/mes</small></h1>
+            <div class="btn-group">
+              <a href="{% url 'suscripcionAdmin' %}" type="button" class="w-100 btn btn-lg btn-primary mt-4">Modificar</a>
+              <a onclick="AnularSuscripcion({{ suscripcionUsuario.id }})" type="button" class="w-100 btn btn-lg btn-danger mt-4"
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% elif suscripcionUsuario.suscripcion.nombre == segundo_nivel.nombre  %}
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-content-center align-items-center">
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm border-info">
+          <div class="card-header py-3 bg-info text-white border-info">
+            <h4 class="my-0 fw-normal">{{segundo_nivel.nombre}}</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">${{segundo_nivel.precio}}<small class="text-muted fw-light">/mes</small></h1>
+            <div class="btn-group">
+              <a href="{% url 'suscripcionAdmin' %}" type="button" class="w-100 btn btn-lg btn-primary mt-4">Modificar</a>
+              <a onclick="AnularSuscripcion({{ suscripcionUsuario.id }})" type="button" class="w-100 btn btn-lg btn-danger mt-4" >Cancelar</a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% elif suscripcionUsuario.suscripcion.nombre == tercer_nivel.nombre  %}
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-content-center align-items-center">
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm border-primary">
+          <div class="card-header py-3 text-white bg-primary border-primary">
+            <h4 class="my-0 fw-normal">{{tercer_nivel.nombre}}</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">${{tercer_nivel.precio}}<small class="text-muted fw-light">/mes</small></h1>
+            <div class="btn-group">
+              <a href="{% url 'suscripcionAdmin' %}" type="button" class="w-100 btn btn-lg btn-primary mt-4">Modificar</a>
+              <a onclick="AnularSuscripcion({{ suscripcionUsuario.id }})" type="button" class="w-100 btn btn-lg btn-danger mt-4" >Cancelar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+{% endblock %}
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{% static 'core/js/suscripcion.js' %}"></script>
+{% endblock %}

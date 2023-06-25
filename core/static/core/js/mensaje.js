@@ -72,21 +72,3 @@ function NoCarrito(){Swal.fire({
 }
 
 
-function Suscrip_pagar(){
-  Swal.fire({
-    title:'Confirmar Suscripcion',
-    icon: 'info',
-    text:'¿Estas seguro?',
-    confirmButtonColor:'#3085d6',
-    confirmButtonText: 'Confirmar',
-    showCancelButton: true,
-    cancelButtonColor: '#d33',
-    cancelButtonText:'Cancelar',
-    }).then((result) => {
-      if (result.isConfirmed) {
-          Swal.fire('Pago Realizado!','Gracias por la suscripcion','success').then(function() {
-              window.location.href = "/FinalSuscripcion/";
-          })
-        }
-      })
-}

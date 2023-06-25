@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 # Create your models here.
 
 
@@ -32,15 +33,20 @@ class item_carrito(models.Model):
         return self.Nombre
     class Meta:
         db_table = 'db_item_carrito'
+        
+class TipoSuscripcion(models.Model):
+    nombre = models.CharField(max_length=50)
+    precio = models.IntegerField()
 
-class Suscripcion(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    tipo_suscripcion = models.CharField(max_length=100)
-    
     def __str__(self):
-        return f'Suscripcion de {self.usuario.username}'
-    class Meta:
-        db_table = 'db_suscripcion'
+        return self.nombre
+    
+class Suscripcion(models.Model):
+    usuario  = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, unique=True, related_name='suscripcion')
+    suscripcion = models.ForeignKey(TipoSuscripcion, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.usuario.username
 
 
 
