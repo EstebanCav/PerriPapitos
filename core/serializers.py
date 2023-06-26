@@ -14,3 +14,16 @@ class ProductoSerializer(serializers.ModelSerializer):
         model = Producto
         fields ='__all__'
 
+
+class TipoSuscripcionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TipoSuscripcion
+        fields ='__all__'
+
+
+
+class SuscripcionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Suscripcion
+        fields ='__all__'
+

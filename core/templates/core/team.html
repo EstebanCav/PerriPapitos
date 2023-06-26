@@ -3,9 +3,16 @@
 {% block nav %}
 <a href="{% url 'index' %}" class="nav-item nav-link ">Inicio</a>
 <a href="{% url 'team' %}" class="nav-item nav-link active">Productos</a>
-{% if user.is_authenticated and user.username == 'admin' %}
+{% for group in user.groups.all %}
+        {% if group.name == 'cliente' %}
+<a href="{% url 'historial' %}" class="nav-item nav-link">Historial de compra</a>
+        {% endif %}
+    {% endfor %}
+{% for group in user.groups.all %}
+    {% if group.name == 'vendedor' %}
 <a href="{% url 'add' %}" class="nav-item nav-link">Agregar Productos</a>
-{% endif %}
+    {% endif %}
+{% endfor %}
 {% if user.is_authenticated %}
 <a href="{% url 'Carrito' %}" class=" nav-item nav-link"><i class="fa fa-shopping-cart "></i></a>
 {% else %}
@@ -34,53 +41,55 @@
         
         
         <div class="row g-3">
-            
+
             {% for aux in listado %}
 
-            
-            
+            {% if aux.Stock > 0 %}
+
             <div class="col-lg-4 col-md-6 fadeInUp" data-wow-delay="0.1s">
                 <div class="team-item text-center rounded overflow-hidden">
                     <div class="rounded-circle overflow-hidden m-4">
                         {% if aux.imagen %}
-                        <img class="img" style="width: 320px;" src="{{ aux.imagen.url }}" alt="Colorlib Template">
+                        <img class="img-fluid" src="{{ aux.imagen.url }}" alt="Colorlib Template">
                         {% else %}
-                        <img class="img" style="width: 320px;" src="{% static 'core/img/id.jpg '%}" alt="">
+                        <img class="img-fluid" src="{% static 'core/img/id.jpg '%}" alt="">
                         {% endif %}
                     </div>
                     <h5 class="mb-0">{{ aux.Nombre }}</h5>
-                    {% if aux.Stock == 0 %}
-                    <p>Stock: No disponible</p>
-                    {% else %}
                     <p>Stock: {{ aux.Stock }}</p>
-                    {% endif %}
                     <small>${{ aux.precio }}</small>
-
                     <!--<a href="" onclick="eliminarProducto({{ aux.id }})" "{% url 'delete' aux.id %}","{% url 'update' aux.id %}"-->
                     <div class="d-flex justify-content-center mt-3">
-                        {% if user.is_authenticated and user.username == 'admin' %}
-                        <a class="btn btn-square btn-primary mx-3" href="{% url 'delete' aux.id %}" onclick="deleteProducto({{ aux.id }})"><i
-                                class="fas fa-trash"></i></a>
-                        <a class="btn btn-square btn-primary mx-3" href="{% url 'update' aux.id %}" onclick="update-product({{ aux.id }})"><i
-                                class="fas fa-pencil-alt"></i></a>
-                                {% endif %}
-                        <form action="" method="POST">
+                        {% for group in user.groups.all %}
+                            {% if group.name == 'vendedor' %}
+                        <a class="btn btn-square btn-primary mx-3" 
+                            onclick="deleteProducto({{ aux.id }})"><i class="fas fa-trash"></i></a>
+                        <a class="btn btn-square btn-primary mx-3" href="{% url 'update' aux.id %}"
+                            onclick="update-product({{ aux.id }})"><i class="fas fa-pencil-alt"></i></a>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        <form action="{% url 'agregar_al_carrito' aux.id %}" method="POST">
                             {% csrf_token %}
+                            <input type="hidden" name="producto_id" value="{{ aux.id }}">
+                            <input type="hidden" name="items" value="1">
                             <input type="hidden" name="nombre_producto" id="nombre_producto" value="{{ aux.Nombre }}">
                             <input type="hidden" name="precio_producto" id="precio_producto" value="{{ aux.precio }}">
                             <input type="hidden" name="imagen_producto" id="imagen_producto" value="{{ aux.imagen }}">
                             {% if user.is_authenticated %}
-                            <input type="submit" style="cursor: pointer;" value="Carrito" class="btn btn-primary">
+                            <input type="submit" style="cursor: pointer;" value="carrito" class="btn btn-primary nav-item ">
                             {% else %}
-                            <a onclick="NoIniciado()" type="submit" style="cursor: pointer;" value="Carrito" class="btn btn-primary">CARRITO</a>
+                            <a onclick="NoIniciado()" type="submit" style="cursor: pointer;" value="Carrito" class="btn btn-primary">Carrito </a>
                             {% endif %}
+                            <a href="{% url 'team' %}" type="submit" style="cursor: pointer;"
+                                class="btn btn-primary">Ver mas</a>
+
 
                         </form>
-
                     </div>
                 </div>
             </div>
-          
+            {% endif %}
             {% endfor %}
             {% include 'core/paginator.html' %}
         </div>

@@ -3,9 +3,16 @@
 {% block nav %}
 <a href="{% url 'index' %}" class="nav-item nav-link ">Inicio</a>
 <a href="{% url 'team' %}" class="nav-item nav-link ">Productos</a>
-{% if user.is_authenticated and user.username == 'admin' %}
+{% for group in user.groups.all %}
+        {% if group.name == 'cliente' %}
+<a href="{% url 'historial' %}" class="nav-item nav-link">Historial de compra</a>
+        {% endif %}
+    {% endfor %}
+{% for group in user.groups.all %}
+    {% if group.name == 'vendedor' %}
 <a href="{% url 'add' %}" class="nav-item nav-link">Agregar Productos</a>
-{% endif %}
+    {% endif %}
+{% endfor %}
 {% if user.is_authenticated %}
 <a href="{% url 'Carrito' %}" class=" nav-item nav-link active"><i class="fa fa-shopping-cart "></i></a>
 {% else %}
@@ -24,37 +31,41 @@
 </div>
 <div class="container">
     <div class="row g-3">
-{% for aux in listaCarrito %}
-
-
-
-<div class="col-lg-4 col-md-6" >
-    <div class="card" style="height: 500px;">
+        <h3>Aplicando descuento de : {{ descuento }}%</p></h3>
+{% for item in items %}
+    <div class="col-lg-4 col-md-6">
+        <div class="card" style="height: 500px;">
             <div class="rounded-circle overflow-hidden m-4">
-                {% if aux.imagen %}
-                <img class=" img" style="width: 320px;" src="{{ aux.imagen.url }}" alt="Colorlib Template">
+                {% if item.producto.imagen %}
+                <img class="img" style="width: 320px;" src="{{ item.producto.imagen.url }}" alt="Colorlib Template">
                 {% else %}
-                <img class="img" style="width: 320px;" src="{% static 'core/img/id.jpg '%}" alt="">
+                <img class="img" style="width: 320px;" src="{% static 'core/img/id.jpg' %}" alt="">
                 {% endif %}
-
             </div>
             <div class="card-body">
-                <h4 class="mb-0">{{ aux.Nombre }}</h4>
-
+                <h4>{{ item.producto.Nombre }}</h4>
                 
-
-                <a class="mb-0">${{ aux.precio }}</a>
-
+                <li>Precio por unidad: ${{ item.producto.precio }}</li>
+                <li>Precio Total: ${{ item.precio_total }}</li>
+                <form method="POST" action="{% url 'actualizar_carrito' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad:</label>
+                        <input type="number" name="cantidad" id="cantidad" min="1" value="{{ item.items }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-arrow-clockwise me-2"></i> Actualizar
+                      </button>
+                      
+                </form>
             </div>
-            
-            <a onclick="eliminarCarro({{ aux.id }})" class="btn btn-primary">ELIMINAR</a>
-
+            <a onclick="eliminarCarro({{ item.id }})" class="btn btn-primary">ELIMINAR</a>
+        </div>
     </div>
-    </div>
-
-    {% empty %}
+{% empty %}
     <div class="col-lg-12 text-center">
-    <p>No se encontraron elementos en el carrito.</p>
+        <p>No se encontraron elementos en el carrito.</p>
     </div>
 {% endfor %}
 {% include 'core/paginator.html' %}
@@ -63,10 +74,13 @@
 <br>
 <div class="col-lg-6">
     <div class="pagar-item">
-        <h3>Total Carrito : ${{ total_precio }}</h3>
+        <h3>Precio Total con Descuento: ${{ precio_total_descuento }}</h3>
+        <h5>Precio Total: ${{ precio_total }}</h5>
+        
+
 
         
-        {% if listaCarrito %}
+        {% if items %}
         <form method="POST" action=""  ><a href=" {% url 'Pagar' %} " class="btn btn-primary py-sm-3 px-sm-5 me-3">Información de pago</a></form>
         {% else %}
         <form method="POST" action=""  ><a onclick="NoCarrito()" class="btn btn-primary py-sm-3 px-sm-5 me-3">Información de pago</a></form>
@@ -74,8 +88,4 @@
         {% endif %}
     </div>
 </div>
-<!-- Menu Start -->
-
-<!-- Menu End -->
-
 {% endblock %}

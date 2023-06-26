@@ -1,28 +1,21 @@
 {% extends 'core/base.html' %}
 {% load static %}
 {% block contenido %}
+<div class="container-xxl py-5 bg-dark hero-header mb-5">
+    <div class="container text-center my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Pagar</h1>
+    </div>
+  </div>
 <div class="payment-total">
-    <h2>Pagar</h2>
 
     <form method="POST" action="{% url 'Carrito' %}">
         {% csrf_token %}
-        <label for="total">Total: <span>${{ total_precio }}</span> </label>
 
-        <label > Nombre tarjeta:</label>
-        <input type="text" id="nombre_tarjeta" name="nombre_tarjeta" required>
+        <h4>Precio Total de tu cuenta ${{ valor }}</h4>
 
-        <label>Número de tarjeta:</label>
-        <input type="text" id="numero_tarjeta" name="numero_tarjeta" required>
-
-        <label >Fecha de expiración:</label>
-        <input type="text" id="fecha_expiracion" name="fecha_expiracion" required>
-
-        <label>CVV:</label>
-        <input type="text" id="cvv" name="cvv" required>
-        <p>${{ valor }}</p>
-        <span>${{ valor }}</span>
 
         <p><div id="btnpaypal"></div></p>
+        <a href="{% url 'Carrito' %}" class="mx-2">Volver</a>
 
     </form>
 </div>

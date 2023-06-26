@@ -22,6 +22,12 @@ class ProductoForm(ModelForm):
             'Fecha_creacion' : forms.SelectDateWidget(years=range(1940,20024))
         }
 
+class CarriForm(forms.ModelForm):
+    class Meta:
+        model = item_carrito
+        fields = ['producto', 'items']
+
 
 class CustomUserCreationForm(UserCreationForm):
-    pass       
+    pass  
+    
