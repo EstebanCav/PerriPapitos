@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-06-2023 a las 08:53:21
+-- Tiempo de generación: 26-06-2023 a las 04:47:44
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.0.28
 
@@ -187,7 +187,15 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (41, 'Can add tipo suscripcion', 11, 'add_tiposuscripcion'),
 (42, 'Can change tipo suscripcion', 11, 'change_tiposuscripcion'),
 (43, 'Can delete tipo suscripcion', 11, 'delete_tiposuscripcion'),
-(44, 'Can view tipo suscripcion', 11, 'view_tiposuscripcion');
+(44, 'Can view tipo suscripcion', 11, 'view_tiposuscripcion'),
+(45, 'Can add comentario', 12, 'add_comentario'),
+(46, 'Can change comentario', 12, 'change_comentario'),
+(47, 'Can delete comentario', 12, 'delete_comentario'),
+(48, 'Can view comentario', 12, 'view_comentario'),
+(49, 'Can add historial compra', 13, 'add_historialcompra'),
+(50, 'Can change historial compra', 13, 'change_historialcompra'),
+(51, 'Can delete historial compra', 13, 'delete_historialcompra'),
+(52, 'Can view historial compra', 13, 'view_historialcompra');
 
 -- --------------------------------------------------------
 
@@ -214,10 +222,13 @@ CREATE TABLE `auth_user` (
 --
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
-(1, 'pbkdf2_sha256$216000$oVzs0jwe8onu$WqJtyCym1g4/EJUt4+lTH8HzTwp+Z64y4aTPHP9WBR0=', '2023-06-25 05:30:46.549142', 1, 'eliasalcaide', '', '', '', 1, 1, '2023-06-25 01:53:51.000000'),
-(2, 'pbkdf2_sha256$216000$6xVd7qtbN9ew$El2bTEL9L71xs4J7nc12J7u+RoQZ3ZOQhM8hSBGkr2I=', '2023-06-25 04:49:11.691348', 0, 'kevin', '', '', '', 0, 1, '2023-06-25 02:06:32.000000'),
+(1, 'pbkdf2_sha256$216000$oVzs0jwe8onu$WqJtyCym1g4/EJUt4+lTH8HzTwp+Z64y4aTPHP9WBR0=', '2023-06-26 00:03:43.430704', 1, 'eliasalcaide', '', '', '', 1, 1, '2023-06-25 01:53:51.000000'),
+(2, 'pbkdf2_sha256$216000$6xVd7qtbN9ew$El2bTEL9L71xs4J7nc12J7u+RoQZ3ZOQhM8hSBGkr2I=', '2023-06-25 19:16:11.631721', 0, 'kevin', '', '', '', 0, 1, '2023-06-25 02:06:32.000000'),
 (3, 'pbkdf2_sha256$216000$QKvHm4GXhDGL$JUB2s7jMmCrs9L8ze14mPIl5mOr1wp7dv09LLQpyVCk=', '2023-06-25 02:56:59.919111', 0, 'vendedor1', '', '', '', 0, 1, '2023-06-25 02:38:29.000000'),
-(4, 'pbkdf2_sha256$216000$N7bbyzoqHXrS$n5UXgUUKIZwHm3eufBnr7DQjWmeGI4au1oKALJqHouU=', NULL, 0, 'admin', '', '', '', 0, 1, '2023-06-25 03:00:31.000000');
+(4, 'pbkdf2_sha256$216000$N7bbyzoqHXrS$n5UXgUUKIZwHm3eufBnr7DQjWmeGI4au1oKALJqHouU=', NULL, 0, 'admin', '', '', '', 0, 1, '2023-06-25 03:00:31.000000'),
+(5, 'pbkdf2_sha256$216000$437yMLUbRt27$FbnFgFPpugo0cVd0ZNYmOJ1e5GDUMGSI7GRP7ltLkzI=', '2023-06-25 23:10:15.088304', 1, 'admin1', '', '', 'admin1@gmail.com', 1, 1, '2023-06-25 20:04:21.000000'),
+(6, 'pbkdf2_sha256$216000$RTB7ADpl9RCn$hUBY1ciLinubDkS3sPyEeKusvKLSwx8lX6kDZa0XcNw=', '2023-06-25 22:45:53.605916', 0, 'hola123', '', '', '', 0, 1, '2023-06-25 22:45:24.181570'),
+(7, 'pbkdf2_sha256$216000$a9kpXq9PemTu$nAEg4irLfjs3/U2y0sEc7PG1sGjRd9WanYuus9pyHTw=', '2023-06-25 22:51:10.593949', 0, 'adsasdasd', '', '', '', 0, 1, '2023-06-25 22:50:05.212352');
 
 -- --------------------------------------------------------
 
@@ -243,7 +254,11 @@ INSERT INTO `auth_user_groups` (`id`, `user_id`, `group_id`) VALUES
 (2, 3, 2),
 (6, 4, 1),
 (7, 4, 2),
-(8, 4, 3);
+(8, 4, 3),
+(9, 5, 1),
+(10, 5, 2),
+(11, 5, 3),
+(12, 7, 1);
 
 -- --------------------------------------------------------
 
@@ -363,6 +378,14 @@ CREATE TABLE `core_suscripcion` (
   `usuario_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `core_suscripcion`
+--
+
+INSERT INTO `core_suscripcion` (`id`, `suscripcion_id`, `usuario_id`) VALUES
+(46, 3, 5),
+(47, 3, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -412,9 +435,9 @@ INSERT INTO `core_tiposuscripcion` (`id`, `nombre`, `precio`) VALUES
 
 CREATE TABLE `db_item_carrito` (
   `id` int(11) NOT NULL,
-  `Nombre` varchar(50) NOT NULL,
-  `precio` int(11) NOT NULL,
-  `imagen` varchar(100) DEFAULT NULL
+  `items` int(11) NOT NULL,
+  `producto_id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -440,9 +463,12 @@ CREATE TABLE `db_producto` (
 --
 
 INSERT INTO `db_producto` (`id`, `Nombre`, `precio`, `Stock`, `Descripcion`, `tipo_id`, `Fecha_creacion`, `imagen`, `update_at`) VALUES
-(1, 'arnes UK', 1000, 50, 'Perfecto para vivir en UK', 1, '2023-06-25', 'arnes_uk_vrT8tUS.jpg', '2023-06-24'),
-(2, 'Bandana azul', 1500, 50, 'Perfecta para camuflarse con el agua, cuidado con ahogarse', 2, '2023-06-25', 'bandana_azul_qVOzWMi.jpg', '2023-06-24'),
-(3, 'Identificador negro', 1400, 90, 'Identificador perfecto para ver como se llama tu perro', 3, '2023-06-25', 'identificador_negro_iUiGpX1.jpeg', '2023-06-24');
+(1, 'arnes UK', 1000, 46, 'Perfecto para vivir en UK', 1, '2023-06-25', 'arnes_uk_vrT8tUS.jpg', '2023-06-25'),
+(2, 'Bandana azul', 1500, 30, 'Perfecta para camuflarse con el agua, cuidado con ahogarse', 2, '2023-06-25', 'bandana_azul_qVOzWMi.jpg', '2023-06-25'),
+(3, 'Identificador negro', 1400, 87, 'Identificador perfecto para ver como se llama tu perro', 3, '2023-06-25', 'identificador_negro_iUiGpX1.jpeg', '2023-06-25'),
+(4, 'Bandana sandia', 500, 70, 'Bandana con estilo de sandia, perfecto para que tu mascota parezca una sandia, cuidado con comertela', 2, '2023-06-26', 'bandana_sandia_4K9j582.jpg', '2023-06-25'),
+(5, 'Bandana tigre', 1500, 100, 'Bandana con estilo de tigre, perfecta para que tu perro asuste a los demás perros, cuidado con que se ponga a pelear que puede que te demanden por daño a otra mascota. Saludos!!!', 2, '2023-06-26', 'bandana_print_PiystP6.png', '2023-06-25'),
+(6, 'Arnes', 1500, 100, 'Correa tipo arnés, perfecto para mantener a tu perro bajo control y así mismo poder sacarlo a pasear.', 1, '2023-06-26', 'Correa_pecho_NSCoVX4_NFVLlIA.jpg', '2023-06-25');
 
 -- --------------------------------------------------------
 
@@ -488,7 +514,14 @@ INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`,
 (20, '2023-06-25 03:08:38.002283', '2', 'Bandana azul', 1, '[{\"added\": {}}]', 8, 1),
 (21, '2023-06-25 03:09:30.595055', '3', 'Identificador negro', 1, '[{\"added\": {}}]', 8, 1),
 (22, '2023-06-25 05:55:23.564626', '1', 'kevin', 3, '', 10, 1),
-(23, '2023-06-25 05:56:00.285434', '5', 'kevin', 3, '', 10, 1);
+(23, '2023-06-25 05:56:00.285434', '5', 'kevin', 3, '', 10, 1),
+(24, '2023-06-25 21:41:37.697457', '5', 'admin1', 2, '[{\"changed\": {\"fields\": [\"Groups\"]}}]', 4, 5),
+(25, '2023-06-25 23:12:04.762413', '5', 'item_carrito object (5)', 2, '[{\"changed\": {\"fields\": [\"Items\"]}}]', 9, 5),
+(26, '2023-06-25 23:12:41.387315', '5', 'item_carrito object (5)', 2, '[{\"changed\": {\"fields\": [\"Items\"]}}]', 9, 5),
+(27, '2023-06-25 23:13:11.141921', '4', 'item_carrito object (4)', 2, '[{\"changed\": {\"fields\": [\"Items\"]}}]', 9, 5),
+(28, '2023-06-26 02:44:11.435930', '4', 'Bandana sandia', 1, '[{\"added\": {}}]', 8, 1),
+(29, '2023-06-26 02:45:38.589844', '5', 'Bandana tigre', 1, '[{\"added\": {}}]', 8, 1),
+(30, '2023-06-26 02:46:33.515275', '6', 'Arnes', 1, '[{\"added\": {}}]', 8, 1);
 
 -- --------------------------------------------------------
 
@@ -512,6 +545,8 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (2, 'auth', 'permission'),
 (4, 'auth', 'user'),
 (5, 'contenttypes', 'contenttype'),
+(12, 'core', 'comentario'),
+(13, 'core', 'historialcompra'),
 (9, 'core', 'item_carrito'),
 (8, 'core', 'producto'),
 (10, 'core', 'suscripcion'),
@@ -560,7 +595,13 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (21, 'core', '0004_item_carrito', '2023-06-25 01:02:22.352199'),
 (22, 'core', '0005_auto_20230520_1508', '2023-06-25 01:02:22.359176'),
 (23, 'sessions', '0001_initial', '2023-06-25 01:02:22.371144'),
-(24, 'core', '0006_suscripcion_tiposuscripcion', '2023-06-25 01:51:06.004462');
+(24, 'core', '0006_suscripcion_tiposuscripcion', '2023-06-25 01:51:06.004462'),
+(25, 'core', '0007_auto_20230625_1448', '2023-06-25 18:48:57.426523'),
+(26, 'core', '0008_auto_20230625_1545', '2023-06-25 19:46:04.257906'),
+(27, 'core', '0009_auto_20230625_1547', '2023-06-25 19:47:34.713726'),
+(28, 'core', '0010_comentario', '2023-06-25 22:09:19.571442'),
+(29, 'core', '0011_auto_20230625_2133', '2023-06-26 01:33:43.505064'),
+(30, 'core', '0012_auto_20230625_2142', '2023-06-26 01:42:42.724951');
 
 -- --------------------------------------------------------
 
@@ -580,7 +621,36 @@ CREATE TABLE `django_session` (
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
 ('0eyxqwokhht41rj5ryzc7gfhu5rsoks7', '.eJxVjEEOwiAQRe_C2hCYDjK4dO8ZmhlAqRpISrsy3l2bdKHb_977LzXyupRx7Xkep6ROCtThdxOOj1w3kO5cb03HVpd5Er0peqddX1rKz_Pu_h0U7uVb-wxE1uUQgD1CQsdEYKOgkwHhSgk9HBGcoQjGGXASkSSkiEO2KOr9AbK-NrI:1qDHgV:3w5-xkDFSXy6S30tSAvN9XmvzfAhy9eH9oNlutCk5fI', '2023-07-09 04:49:11.693349'),
-('75g2sq9am7xv18otzj56w52v7hacbl25', '.eJxVjEEOwiAQAP_C2RCWwkI9eu8bCLAgVQNJaU_GvxuSHvQ6M5k3c_7Yizt62txK7MqAXX5Z8PGZ6hD08PXeeGx139bAR8JP2_nSKL1uZ_s3KL6XscVsNQSMUeYAJikyQBmFoewVaorWhElJoYTFDIQkJ40qizn6mRIk9vkC6AY4BQ:1qDIKk:ADzcY7b5KhpYvJf9aGG88_9A7CC14Hzv5NhRi5H0nC4', '2023-07-09 05:30:46.553134');
+('4qnb84m37doj9hbm74ruayv3sc12n9z2', '.eJxVjEEOwiAQAP_C2RCWwkI9eu8bCLAgVQNJaU_GvxuSHvQ6M5k3c_7Yizt62txK7MqAXX5Z8PGZ6hD08PXeeGx139bAR8JP2_nSKL1uZ_s3KL6XscVsNQSMUeYAJikyQBmFoewVaorWhElJoYTFDIQkJ40qizn6mRIk9vkC6AY4BQ:1qDVPq:7WucLV1X8gTJ4MBht9Nq8f80IPYY1BqOXrUkUe8iWIM', '2023-07-09 19:28:54.448324'),
+('f7kfojselwws5nne1eg9rs7ww4jfh5wu', '.eJxVjM0KAiEURt_FdYj_Ssv2PYPc69WcCoVxZhW9ewmzqNUH3zmcF4uwbzXuI69xIXZmlp1-P4T0yG0CukO7dZ5629YF-VT4QQe_dsrPy-H-BSqMOrPSI4AlnIsuCCdUcZaScdI6ob9Aq-wCFSgiY1A-KSKB3hovjdbs_QHp4De6:1qDYs3:iDeViqMA7v68x2M0bkpxSeEOjXLxpO_Tn7wtnH5HvCs', '2023-07-09 23:10:15.091312'),
+('uzha1fvzmh34ll4e27zelgxrb0co21c2', '.eJxVjEEOwiAQAP_C2RCWwkI9eu8bCLAgVQNJaU_GvxuSHvQ6M5k3c_7Yizt62txK7MqAXX5Z8PGZ6hD08PXeeGx139bAR8JP2_nSKL1uZ_s3KL6XscVsNQSMUeYAJikyQBmFoewVaorWhElJoYTFDIQkJ40qizn6mRIk9vkC6AY4BQ:1qDZhn:qJFzPlb_lWWPKWbkppDKbKqhG-mMrv_0C4Rld6I2Sd4', '2023-07-10 00:03:43.432698');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `historial_compra`
+--
+
+CREATE TABLE `historial_compra` (
+  `items` int(11) NOT NULL,
+  `precio_total` decimal(10,2) NOT NULL,
+  `producto_id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `codigo` varchar(10) NOT NULL,
+  `fecha_compra` datetime(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `historial_compra`
+--
+
+INSERT INTO `historial_compra` (`items`, `precio_total`, `producto_id`, `usuario_id`, `codigo`, `fecha_compra`) VALUES
+(1, 1500.00, 2, 1, '1586598635', '2023-06-26 02:27:30.105483'),
+(4, 6000.00, 2, 1, '2485375905', '2023-06-26 02:05:45.757692'),
+(2, 3000.00, 2, 5, '3239557716', '2023-06-26 02:05:45.748713'),
+(3, 4200.00, 3, 5, '5739952396', '2023-06-26 02:05:45.752706'),
+(1, 1000.00, 1, 1, '7311699128', '2023-06-26 02:27:30.141982'),
+(1, 1000.00, 1, 1, '7403660397', '2023-06-26 02:08:43.831841');
 
 --
 -- Índices para tablas volcadas
@@ -655,7 +725,9 @@ ALTER TABLE `core_tiposuscripcion`
 -- Indices de la tabla `db_item_carrito`
 --
 ALTER TABLE `db_item_carrito`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `db_item_carrito_producto_id_44361e86_fk_db_producto_id` (`producto_id`),
+  ADD KEY `db_item_carrito_usuario_id_e8799e07_fk_auth_user_id` (`usuario_id`);
 
 --
 -- Indices de la tabla `db_producto`
@@ -693,6 +765,14 @@ ALTER TABLE `django_session`
   ADD KEY `django_session_expire_date_a5c62663` (`expire_date`);
 
 --
+-- Indices de la tabla `historial_compra`
+--
+ALTER TABLE `historial_compra`
+  ADD PRIMARY KEY (`codigo`),
+  ADD KEY `historial_compra_producto_id_a2c0a5d5_fk_db_producto_id` (`producto_id`),
+  ADD KEY `historial_compra_usuario_id_acf4dafd_fk_auth_user_id` (`usuario_id`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -712,19 +792,19 @@ ALTER TABLE `auth_group_permissions`
 -- AUTO_INCREMENT de la tabla `auth_permission`
 --
 ALTER TABLE `auth_permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT de la tabla `auth_user`
 --
 ALTER TABLE `auth_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `auth_user_groups`
 --
 ALTER TABLE `auth_user_groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `auth_user_user_permissions`
@@ -736,7 +816,7 @@ ALTER TABLE `auth_user_user_permissions`
 -- AUTO_INCREMENT de la tabla `core_suscripcion`
 --
 ALTER TABLE `core_suscripcion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT de la tabla `core_tipoproducto`
@@ -754,31 +834,31 @@ ALTER TABLE `core_tiposuscripcion`
 -- AUTO_INCREMENT de la tabla `db_item_carrito`
 --
 ALTER TABLE `db_item_carrito`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `db_producto`
 --
 ALTER TABLE `db_producto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `django_content_type`
 --
 ALTER TABLE `django_content_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- Restricciones para tablas volcadas
@@ -819,6 +899,13 @@ ALTER TABLE `core_suscripcion`
   ADD CONSTRAINT `core_suscripcion_usuario_id_e497b785_fk_auth_user_id` FOREIGN KEY (`usuario_id`) REFERENCES `auth_user` (`id`);
 
 --
+-- Filtros para la tabla `db_item_carrito`
+--
+ALTER TABLE `db_item_carrito`
+  ADD CONSTRAINT `db_item_carrito_producto_id_44361e86_fk_db_producto_id` FOREIGN KEY (`producto_id`) REFERENCES `db_producto` (`id`),
+  ADD CONSTRAINT `db_item_carrito_usuario_id_e8799e07_fk_auth_user_id` FOREIGN KEY (`usuario_id`) REFERENCES `auth_user` (`id`);
+
+--
 -- Filtros para la tabla `db_producto`
 --
 ALTER TABLE `db_producto`
@@ -830,6 +917,13 @@ ALTER TABLE `db_producto`
 ALTER TABLE `django_admin_log`
   ADD CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
   ADD CONSTRAINT `django_admin_log_user_id_c564eba6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
+
+--
+-- Filtros para la tabla `historial_compra`
+--
+ALTER TABLE `historial_compra`
+  ADD CONSTRAINT `historial_compra_producto_id_a2c0a5d5_fk_db_producto_id` FOREIGN KEY (`producto_id`) REFERENCES `db_producto` (`id`),
+  ADD CONSTRAINT `historial_compra_usuario_id_acf4dafd_fk_auth_user_id` FOREIGN KEY (`usuario_id`) REFERENCES `auth_user` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
