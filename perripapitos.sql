@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-06-2023 a las 04:47:44
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.0.28
+-- Tiempo de generación: 27-06-2023 a las 19:10:32
+-- Versión del servidor: 10.4.27-MariaDB
+-- Versión de PHP: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `perripapitos`
 --
+CREATE DATABASE IF NOT EXISTS `perripapitos` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `perripapitos`;
 
 -- --------------------------------------------------------
 
@@ -223,12 +225,13 @@ CREATE TABLE `auth_user` (
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
 (1, 'pbkdf2_sha256$216000$oVzs0jwe8onu$WqJtyCym1g4/EJUt4+lTH8HzTwp+Z64y4aTPHP9WBR0=', '2023-06-26 00:03:43.430704', 1, 'eliasalcaide', '', '', '', 1, 1, '2023-06-25 01:53:51.000000'),
-(2, 'pbkdf2_sha256$216000$6xVd7qtbN9ew$El2bTEL9L71xs4J7nc12J7u+RoQZ3ZOQhM8hSBGkr2I=', '2023-06-25 19:16:11.631721', 0, 'kevin', '', '', '', 0, 1, '2023-06-25 02:06:32.000000'),
+(2, 'pbkdf2_sha256$216000$6xVd7qtbN9ew$El2bTEL9L71xs4J7nc12J7u+RoQZ3ZOQhM8hSBGkr2I=', '2023-06-27 16:03:24.267170', 0, 'kevin', '', '', '', 0, 1, '2023-06-25 02:06:32.000000'),
 (3, 'pbkdf2_sha256$216000$QKvHm4GXhDGL$JUB2s7jMmCrs9L8ze14mPIl5mOr1wp7dv09LLQpyVCk=', '2023-06-25 02:56:59.919111', 0, 'vendedor1', '', '', '', 0, 1, '2023-06-25 02:38:29.000000'),
 (4, 'pbkdf2_sha256$216000$N7bbyzoqHXrS$n5UXgUUKIZwHm3eufBnr7DQjWmeGI4au1oKALJqHouU=', NULL, 0, 'admin', '', '', '', 0, 1, '2023-06-25 03:00:31.000000'),
-(5, 'pbkdf2_sha256$216000$437yMLUbRt27$FbnFgFPpugo0cVd0ZNYmOJ1e5GDUMGSI7GRP7ltLkzI=', '2023-06-25 23:10:15.088304', 1, 'admin1', '', '', 'admin1@gmail.com', 1, 1, '2023-06-25 20:04:21.000000'),
+(5, 'pbkdf2_sha256$216000$437yMLUbRt27$FbnFgFPpugo0cVd0ZNYmOJ1e5GDUMGSI7GRP7ltLkzI=', '2023-06-27 15:48:23.447275', 1, 'admin1', '', '', 'admin1@gmail.com', 1, 1, '2023-06-25 20:04:21.000000'),
 (6, 'pbkdf2_sha256$216000$RTB7ADpl9RCn$hUBY1ciLinubDkS3sPyEeKusvKLSwx8lX6kDZa0XcNw=', '2023-06-25 22:45:53.605916', 0, 'hola123', '', '', '', 0, 1, '2023-06-25 22:45:24.181570'),
-(7, 'pbkdf2_sha256$216000$a9kpXq9PemTu$nAEg4irLfjs3/U2y0sEc7PG1sGjRd9WanYuus9pyHTw=', '2023-06-25 22:51:10.593949', 0, 'adsasdasd', '', '', '', 0, 1, '2023-06-25 22:50:05.212352');
+(7, 'pbkdf2_sha256$216000$a9kpXq9PemTu$nAEg4irLfjs3/U2y0sEc7PG1sGjRd9WanYuus9pyHTw=', '2023-06-25 22:51:10.593949', 0, 'adsasdasd', '', '', '', 0, 1, '2023-06-25 22:50:05.212352'),
+(8, 'pbkdf2_sha256$216000$k192TBklZFyV$jHPTKM/Soy9PssKyQpz1tPkXhfakwxy1gr2UmJD2BPc=', '2023-06-27 15:47:44.975947', 0, 'Cliente1', '', '', '', 0, 1, '2023-06-27 15:47:44.851330');
 
 -- --------------------------------------------------------
 
@@ -258,7 +261,8 @@ INSERT INTO `auth_user_groups` (`id`, `user_id`, `group_id`) VALUES
 (9, 5, 1),
 (10, 5, 2),
 (11, 5, 3),
-(12, 7, 1);
+(12, 7, 1),
+(13, 8, 1);
 
 -- --------------------------------------------------------
 
@@ -440,6 +444,13 @@ CREATE TABLE `db_item_carrito` (
   `usuario_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `db_item_carrito`
+--
+
+INSERT INTO `db_item_carrito` (`id`, `items`, `producto_id`, `usuario_id`) VALUES
+(22, 2, 2, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -464,7 +475,7 @@ CREATE TABLE `db_producto` (
 
 INSERT INTO `db_producto` (`id`, `Nombre`, `precio`, `Stock`, `Descripcion`, `tipo_id`, `Fecha_creacion`, `imagen`, `update_at`) VALUES
 (1, 'arnes UK', 1000, 46, 'Perfecto para vivir en UK', 1, '2023-06-25', 'arnes_uk_vrT8tUS.jpg', '2023-06-25'),
-(2, 'Bandana azul', 1500, 30, 'Perfecta para camuflarse con el agua, cuidado con ahogarse', 2, '2023-06-25', 'bandana_azul_qVOzWMi.jpg', '2023-06-25'),
+(2, 'Bandana azul', 1500, 28, 'Perfecta para camuflarse con el agua, cuidado con ahogarse', 2, '2023-06-25', 'bandana_azul_qVOzWMi.jpg', '2023-06-27'),
 (3, 'Identificador negro', 1400, 87, 'Identificador perfecto para ver como se llama tu perro', 3, '2023-06-25', 'identificador_negro_iUiGpX1.jpeg', '2023-06-25'),
 (4, 'Bandana sandia', 500, 70, 'Bandana con estilo de sandia, perfecto para que tu mascota parezca una sandia, cuidado con comertela', 2, '2023-06-26', 'bandana_sandia_4K9j582.jpg', '2023-06-25'),
 (5, 'Bandana tigre', 1500, 100, 'Bandana con estilo de tigre, perfecta para que tu perro asuste a los demás perros, cuidado con que se ponga a pelear que puede que te demanden por daño a otra mascota. Saludos!!!', 2, '2023-06-26', 'bandana_print_PiystP6.png', '2023-06-25'),
@@ -621,6 +632,7 @@ CREATE TABLE `django_session` (
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
 ('0eyxqwokhht41rj5ryzc7gfhu5rsoks7', '.eJxVjEEOwiAQRe_C2hCYDjK4dO8ZmhlAqRpISrsy3l2bdKHb_977LzXyupRx7Xkep6ROCtThdxOOj1w3kO5cb03HVpd5Er0peqddX1rKz_Pu_h0U7uVb-wxE1uUQgD1CQsdEYKOgkwHhSgk9HBGcoQjGGXASkSSkiEO2KOr9AbK-NrI:1qDHgV:3w5-xkDFSXy6S30tSAvN9XmvzfAhy9eH9oNlutCk5fI', '2023-07-09 04:49:11.693349'),
+('404jimghie35a97j95q11zo5v59i9pon', '.eJxVjEEOwiAQRe_C2hCYDjK4dO8ZmhlAqRpISrsy3l2bdKHb_977LzXyupRx7Xkep6ROCtThdxOOj1w3kO5cb03HVpd5Er0peqddX1rKz_Pu_h0U7uVb-wxE1uUQgD1CQsdEYKOgkwHhSgk9HBGcoQjGGXASkSSkiEO2KOr9AbK-NrI:1qEBA4:_xwrdQjKcz4Zd1QN0a3vMD65amHhKXIgDbbwrP4w_70', '2023-07-11 16:03:24.270170'),
 ('4qnb84m37doj9hbm74ruayv3sc12n9z2', '.eJxVjEEOwiAQAP_C2RCWwkI9eu8bCLAgVQNJaU_GvxuSHvQ6M5k3c_7Yizt62txK7MqAXX5Z8PGZ6hD08PXeeGx139bAR8JP2_nSKL1uZ_s3KL6XscVsNQSMUeYAJikyQBmFoewVaorWhElJoYTFDIQkJ40qizn6mRIk9vkC6AY4BQ:1qDVPq:7WucLV1X8gTJ4MBht9Nq8f80IPYY1BqOXrUkUe8iWIM', '2023-07-09 19:28:54.448324'),
 ('f7kfojselwws5nne1eg9rs7ww4jfh5wu', '.eJxVjM0KAiEURt_FdYj_Ssv2PYPc69WcCoVxZhW9ewmzqNUH3zmcF4uwbzXuI69xIXZmlp1-P4T0yG0CukO7dZ5629YF-VT4QQe_dsrPy-H-BSqMOrPSI4AlnIsuCCdUcZaScdI6ob9Aq-wCFSgiY1A-KSKB3hovjdbs_QHp4De6:1qDYs3:iDeViqMA7v68x2M0bkpxSeEOjXLxpO_Tn7wtnH5HvCs', '2023-07-09 23:10:15.091312'),
 ('uzha1fvzmh34ll4e27zelgxrb0co21c2', '.eJxVjEEOwiAQAP_C2RCWwkI9eu8bCLAgVQNJaU_GvxuSHvQ6M5k3c_7Yizt62txK7MqAXX5Z8PGZ6hD08PXeeGx139bAR8JP2_nSKL1uZ_s3KL6XscVsNQSMUeYAJikyQBmFoewVaorWhElJoYTFDIQkJ40qizn6mRIk9vkC6AY4BQ:1qDZhn:qJFzPlb_lWWPKWbkppDKbKqhG-mMrv_0C4Rld6I2Sd4', '2023-07-10 00:03:43.432698');
@@ -645,12 +657,12 @@ CREATE TABLE `historial_compra` (
 --
 
 INSERT INTO `historial_compra` (`items`, `precio_total`, `producto_id`, `usuario_id`, `codigo`, `fecha_compra`) VALUES
-(1, 1500.00, 2, 1, '1586598635', '2023-06-26 02:27:30.105483'),
-(4, 6000.00, 2, 1, '2485375905', '2023-06-26 02:05:45.757692'),
-(2, 3000.00, 2, 5, '3239557716', '2023-06-26 02:05:45.748713'),
-(3, 4200.00, 3, 5, '5739952396', '2023-06-26 02:05:45.752706'),
-(1, 1000.00, 1, 1, '7311699128', '2023-06-26 02:27:30.141982'),
-(1, 1000.00, 1, 1, '7403660397', '2023-06-26 02:08:43.831841');
+(1, '1500.00', 2, 1, '1586598635', '2023-06-26 02:27:30.105483'),
+(4, '6000.00', 2, 1, '2485375905', '2023-06-26 02:05:45.757692'),
+(2, '3000.00', 2, 5, '3239557716', '2023-06-26 02:05:45.748713'),
+(3, '4200.00', 3, 5, '5739952396', '2023-06-26 02:05:45.752706'),
+(1, '1000.00', 1, 1, '7311699128', '2023-06-26 02:27:30.141982'),
+(1, '1000.00', 1, 1, '7403660397', '2023-06-26 02:08:43.831841');
 
 --
 -- Índices para tablas volcadas
@@ -798,13 +810,13 @@ ALTER TABLE `auth_permission`
 -- AUTO_INCREMENT de la tabla `auth_user`
 --
 ALTER TABLE `auth_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `auth_user_groups`
 --
 ALTER TABLE `auth_user_groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `auth_user_user_permissions`
@@ -834,7 +846,7 @@ ALTER TABLE `core_tiposuscripcion`
 -- AUTO_INCREMENT de la tabla `db_item_carrito`
 --
 ALTER TABLE `db_item_carrito`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `db_producto`
