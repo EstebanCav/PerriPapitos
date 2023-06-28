@@ -117,7 +117,6 @@ def Registrar(request):
 
     return render(request, 'registration/Registrar.html', data)
 
-@grupo_requerido('vendedor')
 def add(request):
     data={
         'form' : ProductoForm()
@@ -153,11 +152,6 @@ def delete(request,id):
     producto.delete()
 
     return redirect(to='index')
-
-def generar_codigo_compra():
-    length = 10
-    letters_and_digits = string.ascii_uppercase + string.digits
-    return ''.join(random.choice(letters_and_digits) for _ in range(length))
 
 
 
@@ -401,13 +395,15 @@ def Finalcompra(request):
 
     # Guardar los elementos del carrito en la tabla HistorialCompra
     for item in carrito_items:
-        historial_compra = HistorialCompra(
+        pedido = Pedido(
             usuario=item.usuario,
             producto=item.producto,
             items=item.items,
             precio_total=item.items * item.producto.precio
         )
-        historial_compra.save()
+        pedido.save()
+        historial = HistorialCompra(pedido=pedido)
+        historial.save()
 
     # Eliminar los elementos del carrito
     carrito_items.delete()
@@ -439,12 +435,16 @@ def Varisus(request):
 @grupo_requerido('cliente')
 def historial(request):
     # Obtener el historial de compras del usuario actual
-    historial_compras = HistorialCompra.objects.filter(usuario=request.user)
+    pedido = Pedido.objects.filter(usuario=request.user)
+    historial=HistorialCompra
     
     # Pasar el historial de compras al contexto de la plantilla
     data = {
-        'historial_compras': historial_compras
+        'pedido': pedido,
+        'historial':historial
     }
+
+    return render(request,'core/historial.html',data)
 
     return render(request,'core/historial.html',data)
 
