@@ -27,6 +27,8 @@ urlpatterns = [
     path('suscripcionAdmin/',suscripcionAdmin,name='suscripcionAdmin'),
     path('agregar_al_carrito/<int:producto_id>/', agregar_al_carrito, name='agregar_al_carrito'),
     path('historial/', historial,name='historial'),
+    path('cambiar_estado/<int:pedido_id>/', cambiar_estado_pedido, name='cambiar_estado_pedido'),
+    path('seguimiento/', seguimiento, name='seguimiento'),
     #crud
     path('Registrar/',Registrar, name="Registrar"),
     path('add/',add, name="add"),

@@ -11,6 +11,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import Group
 from decimal import Decimal
 from django.http import HttpResponse
+from django.db import transaction
+from .forms import SeguimientoPedidoForm
 
 #FUNCION GENERICA QUE VALIDA EL GRUPO DEL USUARIO
 def grupo_requerido(nombre_grupo):
@@ -130,21 +132,27 @@ def add(request):
 
     return render(request,'core/add-product.html', data)
 
+
+
+
 @grupo_requerido('vendedor')
 def update(request, id):
-    producto = Producto.objects.get(id=id) #OBTIENE UN PRODUCTO POR EL ID
-    data={
-        'form' : ProductoForm(instance=producto, )#CARGAMOS EL PRODUCTO POR EL ID
-    }
-    if request.method =='POST':
-        formulario = ProductoForm(data=request.POST, instance=producto, files=request.FILES)#OBTIENE LA DATA DEL FORMULARIO
-        if formulario.is_valid():
-            formulario.save() #INSERT INTO...........
-            #data['msj']="Producto modificado correctamente"
-            messages.success(request, "Producto almacenado correctamente")
-            data['form']=formulario #carga la nueva infor en el formulario
+    pedido = Pedido.objects.get(id=id)  # Obtener un pedido por su ID
 
-    return render(request,'core/add-product.html', data)
+    if request.method == 'POST':
+        form = PedidoForm(request.POST, instance=pedido)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Estado del pedido modificado correctamente")
+            return redirect('index')
+    else:
+        form = PedidoForm(instance=pedido)
+
+    data = {
+        'form': form,
+    }
+
+    return render(request, 'core/add-product.html', data)
 
 @grupo_requerido('vendedor')
 def delete(request,id):
@@ -152,7 +160,6 @@ def delete(request,id):
     producto.delete()
 
     return redirect(to='index')
-
 
 
 
@@ -181,6 +188,8 @@ def agregar_al_carrito(request, producto_id):
     
     # Retornar un mensaje de éxito
     return redirect(request.META['HTTP_REFERER'])
+
+
 
 @grupo_requerido('cliente')
 def actualizar_carrito(request):
@@ -255,11 +264,23 @@ def Carrito(request):
     }
 
     return render(request, 'core/Carrito.html', data)
-@grupo_requerido('cliente')
+
+
 def eliminarCarro(request, id):
-    Carrito = item_carrito.objects.get(id=id)
-    Carrito.delete()
+    carrito = item_carrito.objects.get(id=id)
+    
+    # Obtener el producto del carrito
+    producto = carrito.producto
+    
+    # Incrementar el stock del producto
+    producto.Stock += carrito.items
+    producto.save()
+    
+    # Eliminar el registro del carrito
+    carrito.delete()
+    
     return redirect("Carrito")
+
 
 def Contact(request):
     return render(request,'core/Contact.html')
@@ -321,7 +342,7 @@ def team(request):
     ##suscripcion
 @grupo_requerido('cliente')
 def suscripcion(request):
-    primer_nivel= TipoSuscripcion.objects.get(id=1)
+    primer_nivel = TipoSuscripcion.objects.get(id=1)
     segundo_nivel = TipoSuscripcion.objects.get(id=2)
     tercer_nivel = TipoSuscripcion.objects.get(id=3)
     
@@ -335,9 +356,24 @@ def suscripcion(request):
         'segundo_nivel': segundo_nivel,
         'tercer_nivel' : tercer_nivel,
         'suscripcionUsuario'  : suscripcionUsuario,
-
     }
+    
+    respuesta = requests.get('https://mindicador.cl/api/dolar').json()
+    valor_usd = respuesta['serie'][0]['valor']
+
+    precios = {
+        'primer_nivel': primer_nivel.precio,
+        'segundo_nivel': segundo_nivel.precio,
+        'tercer_nivel': tercer_nivel.precio
+    }
+    
+    valor_suscripcion = precios['segundo_nivel']  # Obtén el precio del primer nivel, puedes cambiarlo según tus necesidades
+    valor_total = valor_suscripcion / valor_usd
+
+    data['valor'] = round(valor_total, 2)
+    
     return render(request, 'core/suscripcion.html', data)
+
 
 
 def suscripcionAdmin(request):
@@ -388,28 +424,34 @@ def suscribirse(request):
 
     return render(request, 'core/suscribirse.html')
 
+
 @grupo_requerido('cliente')
 def Finalcompra(request):
-
     carrito_items = item_carrito.objects.all()
 
-    # Guardar los elementos del carrito en la tabla HistorialCompra
-    for item in carrito_items:
-        pedido = Pedido(
-            usuario=item.usuario,
-            producto=item.producto,
-            items=item.items,
-            precio_total=item.items * item.producto.precio
-        )
-        pedido.save()
-        historial = HistorialCompra(pedido=pedido)
+    with transaction.atomic():
+        # Crear una compra y asignarle un código
+        historial = HistorialCompra.objects.create()
+        historial.codigo = generar_codigo()
         historial.save()
+
+        # Guardar los elementos del carrito en la tabla HistorialCompra
+        for item in carrito_items:
+            pedido = Pedido(
+                usuario=item.usuario,
+                producto=item.producto,
+                items=item.items,
+                precio_total=item.items * item.producto.precio
+            )
+            pedido.save()
+            historial.compra.add(pedido)
 
     # Eliminar los elementos del carrito
     carrito_items.delete()
 
+    return render(request,'core/Carrito.html')   
 
-    return render(request,'core/Carrito.html')    
+
 
 def FinalSuscripcion(request):
 
@@ -435,16 +477,52 @@ def Varisus(request):
 @grupo_requerido('cliente')
 def historial(request):
     # Obtener el historial de compras del usuario actual
-    pedido = Pedido.objects.filter(usuario=request.user)
-    historial=HistorialCompra
-    
+    pedidos = Pedido.objects.filter(usuario=request.user)
+    historiales = HistorialCompra.objects.filter(compra__in=pedidos)
+
+
     # Pasar el historial de compras al contexto de la plantilla
     data = {
-        'pedido': pedido,
-        'historial':historial
+        'historiales': historiales
     }
 
-    return render(request,'core/historial.html',data)
+    return render(request,'core/historial.html', data)
 
-    return render(request,'core/historial.html',data)
+@grupo_requerido('vendedor')
+def seguimiento(request):
+    pedidos = Pedido.objects.all()  # Obtiene todos los pedidos
+    usuarios = User.objects.all() # OBTENEMOS LA VARIABLE DE LA URL, SI NO EXISTE NADA DEVUELVE 1
 
+
+    nombre_usuario = request.GET.get('usuario')
+
+    
+
+    historiales = HistorialCompra.objects.filter(compra__in=pedidos)
+
+    if nombre_usuario:
+        pedidos = pedidos.filter(usuario__username=nombre_usuario)
+
+    data = {
+        'pedidos': pedidos,
+        'historiales': historiales,
+        'usuarios': usuarios,
+        'nombre_usuario': nombre_usuario
+    }
+
+    return render(request, 'core/seguimiento.html', data)
+
+@grupo_requerido('vendedor')
+def cambiar_estado_pedido(request, pedido_id):
+    # Obtener el pedido específico
+    pedido = Pedido.objects.get(pk=pedido_id)
+
+    if request.method == 'POST':
+        # Obtener el nuevo estado seleccionado
+        nuevo_estado = request.POST.get('nuevo_estado')
+
+        # Actualizar el estado del pedido
+        pedido.estado = nuevo_estado
+        pedido.save()
+        return redirect('seguimiento')
+    return render(request, 'core/seguimiento.html', {'pedido': pedido})

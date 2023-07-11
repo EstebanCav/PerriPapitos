@@ -5,7 +5,7 @@
 <a href="{% url 'team' %}" class="nav-item nav-link">Productos</a>
 {% for group in user.groups.all %}
     {% if group.name == 'vendedor' %}
-<a href="{% url 'add' %}" class="nav-item nav-link">Agregar Productos</a>
+<a href="{% url 'add' %}" class="nav-item nav-link">Administracion</a>
     {% endif %}
 {% endfor %}
 {% if user.is_authenticated %}

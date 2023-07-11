@@ -1,4 +1,4 @@
-{% extends 'core/base.html' %}
+{% extends 'core/base.html' %}in
 {% load static %}
 {% block nav %}
 <a href="{% url 'index' %}" class="nav-item nav-link">Inicio</a>
@@ -11,7 +11,7 @@
 
     {% for group in user.groups.all %}
         {% if group.name == 'vendedor' %}
-<a href="{% url 'add' %}" class="nav-item nav-link">Agregar Productos</a>
+<a href="{% url 'add' %}" class="nav-item nav-link">Administracion</a>
         {% endif %}
     {% endfor %}
 {% if user.is_authenticated %}
@@ -29,31 +29,30 @@
     <div class="container text-center my-5 pt-5 pb-4">
         <h1 class="display-3 text-white mb-3 animated slideInDown">Historial de compra</h1>
     </div>
-  </div>
-<div class="container">
+</div>
 
+<div class="container">
     <div class="row">
-        {% for compra in pedido %}
-        <p>Código de compra: {{ compra.codigo }}</p>
+        {% for historial in historiales %}
+        <p>Código de compra: {{ historial.codigo }}</p>
+        
+        {% for pedido in historial.compra.all %}
         <div class="card mb-4 rounded-3 shadow-sm border-secondary flex-row-reverse">
             <div class="card-body">
-                <p>Nombre: {{ compra.producto.Nombre }}</p>   
-                <p>Tipo: {{ compra.producto.tipo }}</p>
-                <p>Descripcion: {{ compra.producto.Descripcion }}</p>
-                <p>Precio: {{ compra.producto.precio }} </p>
+                <p>Nombre: {{ pedido.producto.Nombre }}</p>   
+                <p>Tipo: {{ pedido.producto.tipo }}</p>
+                <p>Descripcion: {{ pedido.producto.Descripcion }}</p>
+                <p>Cantidad: {{ pedido.items }}</p>
+                <p>Precio: {{ pedido.producto.precio }} </p>
+                <p>Estado del pedido: {{ pedido.estado }}</p>
+                <p>Cantidad pagada: {{ pedido.precio_total|floatformat:0 }}</p>
                 <br>
-                <br>
-                <br>
-
-                <p>Fecha de compra: {{ compra.fecha_compra }}</p>
+                <p>Fecha de compra: {{ pedido.fecha_compra }}</p>
             </div>
-            <img class="img" style="width: 320px;" src="{{ compra.producto.imagen.url }}" alt="Colorlib Template">
+            <img class="img" style="width: 320px;" src="{{ pedido.producto.imagen.url }}" alt="Colorlib Template">
         </div>
+        {% endfor %}
         {% endfor %}
     </div>
 </div>
-    
-
-
-
 {% endblock %}

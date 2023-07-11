@@ -23,94 +23,39 @@
     {% endif %}
   </div>
   {% if suscripcionUsuario == none %}
-  <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-    <div class="col">
+  <div class="row row-cols-1 row-cols-md-3 mb-3 justify-content-center align-items-center">
+    <div class="col text-center">
       <div class="card mb-4 rounded-3 shadow-sm border-secondary">
         <div class="card-header py-3 bg-secondary">
-          <h4 class="my-0 fw-normal">{{primer_nivel.nombre}}</h4>
-        </div>
-        <a onclick="ComprarSuscripcion({{ primer_nivel.id }})" type="button" class="card-body btn btn-lg btn-outline-secondary">
-          <h1 class="card-title pricing-card-title">${{primer_nivel.precio}}<small class="text-muted fw-light"></small></h1>
-          <p class="text-muted">Descuento: 3%</p>
-        </a>
-      </div>
-    </div>
-    <div class="col">
-      <div class="card mb-4 rounded-3 shadow-sm border-primary">
-        <div class="card-header py-3 text-white bg-primary border-primary">
-          <h4 class="my-0 fw-normal">{{segundo_nivel.nombre}}</h4>
-        </div>
-        <a onclick="ComprarSuscripcion({{ segundo_nivel.id }})" type="button" class="card-body btn btn-lg btn-outline-primary">
-          <h1 class="card-title pricing-card-title">${{segundo_nivel.precio}}<small class="text-muted fw-light"></small></h1>
-          <p class="text-muted">Descuento: 5%</p>
-        </a>
-      </div>
-    </div>
-    <div class="col">
-      <div class="card mb-4 rounded-3 shadow-sm border-info">
-        <div class="card-header py-3 bg-info text-white border-info">
-          <h4 class="my-0 fw-normal">{{tercer_nivel.nombre}}</h4>
-        </div>
-        <a onclick="ComprarSuscripcion({{ tercer_nivel.id }})" type="button" class="card-body btn btn-lg btn-outline-info">
-          <h1 class="card-title pricing-card-title">${{tercer_nivel.precio}}<small class="text-muted fw-light"></small></h1>
-          <p class="text-muted">Descuento: 10%</p>
-        </a>
-      </div>
-    </div>
-  </div>
-  {% elif suscripcionUsuario.suscripcion.nombre == primer_nivel.nombre %}
-  <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-content-center align-items-center">
-    <div class="col">
-      <div class="card mb-4 rounded-3 shadow-sm border-oro">
-        <div class="card-header py-3 bg-secondary">
-          <h4 class="my-0 fw-normal">{{primer_nivel.nombre}}</h4>
+          <h4 class="my-0 fw-normal">Suscripción</h4>
         </div>
         <div class="card-body">
-          <h1 class="card-title pricing-card-title">${{primer_nivel.precio}}<small class="text-muted fw-light"></small></h1>
-          <p class="text-muted">Descuento: 3%</p>
-          <div class="btn-group">
-            <a onclick="AnularSuscripcion({{ suscripcionUsuario.id }})" type="button" class="w-100 btn btn-lg btn-danger mt-4">Cancelar</a> 
-          </div>
+          <h1 class="card-title pricing-card-title">${{segundo_nivel.precio}}<small class="text-muted fw-light"></small></h1>
+          <p class="text-muted">Descuento: 5%</p>
+          <a onclick="ComprarSuscripcion({{ segundo_nivel.id }})" type="button" id="btnpaypal"></a>
         </div>
       </div>
     </div>
   </div>
-
+  
 {% elif suscripcionUsuario.suscripcion.nombre == segundo_nivel.nombre %}
-  <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-content-center align-items-center">
-    <div class="col">
-      <div class="card mb-4 rounded-3 shadow-sm border-oro">
-        <div class="card-header py-3 text-white bg-primary border-primary">
-          <h4 class="my-0 fw-normal">{{segundo_nivel.nombre}}</h4>
-        </div>
-        <div class="card-body">
-          <h1 class="card-title pricing-card-title">${{segundo_nivel.precio}}<small class="text-muted fw-light"></small></h1>
-          <p class="text-muted">Descuento: 5%</p>
-          <div class="btn-group">
-            <a onclick="AnularSuscripcion({{ suscripcionUsuario.id }})" type="button" class="w-100 btn btn-lg btn-danger mt-4">Cancelar</a>
-          </div>
+<div class="row row-cols-1 row-cols-md-3 mb-3 justify-content-center align-items-center">
+  <div class="col text-center">
+    <div class="card mb-4 rounded-3 shadow-sm border-secondary">
+      <div class="card-header py-3 bg-secondary">
+        <h4 class="my-0 fw-normal">Suscripción</h4>
+      </div>
+      <div class="card-body">
+        <h1 class="card-title pricing-card-title">${{segundo_nivel.precio}}<small class="text-muted fw-light"></small></h1>
+        <p class="text-muted">Descuento: 5%</p>
+        <div class="btn-group">
+          <a onclick="AnularSuscripcion({{ suscripcionUsuario.id }})" type="button" class="w-100 btn btn-lg btn-danger mt-4">Cancelar</a>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-{% elif suscripcionUsuario.suscripcion.nombre == tercer_nivel.nombre %}
-  <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-content-center align-items-center">
-    <div class="col">
-      <div class="card mb-4 rounded-3 shadow-sm border-info">
-        <div class="card-header py-3 bg-info text-white border-info">
-          <h4 class="my-0 fw-normal">{{tercer_nivel.nombre}}</h4>
-        </div>
-        <div class="card-body">
-          <h1 class="card-title pricing-card-title">${{tercer_nivel.precio}}<small class="text-muted fw-light"></small></h1>
-          <p class="text-muted">Descuento: 10%</p>
-          <div class="btn-group">
-            <a onclick="AnularSuscripcion({{ suscripcionUsuario.id }})" type="button" class="w-100 btn btn-lg btn-danger mt-4">Cancelar</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 {% endif %}
 </div>
 
@@ -118,4 +63,64 @@
 {% block js %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{% static 'core/js/suscripcion.js' %}"></script>
+
+
+
+<script src="http://www.paypalobjects.com/api/checkout.js"></script>
+<script>
+  paypal.Button.render({
+      env: 'sandbox',
+      client: {
+          sandbox: 'AbH3-GPxABHeRTQsxWESbeJgTnRZgFV1UZa3c3zRJpUW8tnizxXguXgEEFoNoxe2mxDi2g0WMDpgTIVH',
+          production: 'demo_production_client_id'
+      },
+      locale: 'es_CL',
+      style: {
+          size: 'large', // small, medium, large
+          color: 'gold', // gold, black
+          shape: 'rect' // pill, rect
+      },
+      commit: true,
+      payment: function(data, actions) {
+          return actions.payment.create({
+              transactions: [{
+                  amount: {
+                      total: '{{ valor }}', // MONTO A PAGAR
+                      currency: 'USD' // USD, CN
+                  }
+              }]
+          });
+      },
+      onAuthorize: function(data, actions) {
+          Swal.fire({
+              title: 'Confirmar Suscripcion',
+              icon: 'info',
+              text: '¿Estas seguro?',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              cancelButtonText: 'Cancelar',
+              confirmButtonText: 'Confirmar'
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  swal.fire('Pago Realizado!', 'Gracias por la suscripcion', 'success').then(function() {
+                      window.location.href = "/addSuscripcion/{{ segundo_nivel.id }}/";
+                  });
+              }
+          });
+      },
+      onCancel: function(data) {
+          Swal.fire({
+              title: 'Transaccion Cancelada',
+              text: 'El pago ha sido cancelado',
+              icon: 'success',
+              confirmButtonColor: '#3085d6',
+              confirmButtonText: 'Confirmar'
+          }).then(function() {
+              window.location.href = "/suscripcion/";
+          });
+      },
+  }, '#btnpaypal');
+</script>
+
 {% endblock %}
