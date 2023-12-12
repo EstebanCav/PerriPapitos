@@ -32,3 +32,8 @@ class CarriForm(forms.ModelForm):
 
 class CustomUserCreationForm(UserCreationForm):
     pass
+
+class PostulacionForm(forms.ModelForm):
+    class Meta:
+        model = PostulacionTalleres
+        fields = '__all__'

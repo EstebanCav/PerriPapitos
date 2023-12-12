@@ -2,10 +2,10 @@
 {% load static %}
 {% block nav %}
 <a href="{% url 'index' %}" class="nav-item nav-link active">Inicio</a>
-<a href="{% url 'team' %}" class="nav-item nav-link">Productos</a>
+<a href="{% url 'team' %}" class="nav-item nav-link">Talleres</a>
 {% for group in user.groups.all %}
         {% if group.name == 'cliente' %}
-<a href="{% url 'historial' %}" class="nav-item nav-link">Historial de compra</a>
+<!--a href="{% url 'historial' %}" class="nav-item nav-link">Historial de compra</a-->
         {% endif %}
     {% endfor %}
     {% for group in user.groups.all %}
@@ -14,7 +14,7 @@
         {% endif %}
     {% endfor %}
 {% if user.is_authenticated %}
-<a href="{% url 'Carrito' %}" class=" nav-item nav-link"><i class="fa fa-shopping-cart "></i></a>
+<a href="{% url 'Carrito' %}" class=" nav-item nav-link"><!--i class="fa fa-shopping-cart "></i--> POSTULACIONES</a>
 {% else %}
 <a onclick="NoIniciado()" class=" nav-item nav-link"><i class="fa fa-shopping-cart "></i></a>
 {% endif %}
@@ -27,12 +27,12 @@
     <div class="container my-5 py-5">
         <div class="row align-items-center g-5">
             <div class="col-lg-6 text-center text-lg-start">
-                <h1 class="display-3 text-white animated slideInLeft">PerriPapitos</h1>
-                <h2 class="text-white animated slideInLeft">Tienda de mascotas</h2>
+                <h1 class="display-3 text-white animated slideInLeft">Municipalidad Linda</h1>
+                <h2 class="text-white animated slideInLeft">Para Adultos Mayores</h2>
 
                 <p class="text-white animated slideInLeft mb-4 pb-2"></p>
                 <a href=" {% url 'team' %} " class="btn btn-primary py-sm-3 px-sm-5 me-3 animated slideInLeft">Nuestros
-                    productos </a>
+                    Talleres </a>
             </div>
             <div class="col-lg-6 text-center text-lg-end overflow-hidden">
                 <img class="img-fluid" src="{% static 'core/img/hueso_icon.png '%}" alt="">
@@ -70,13 +70,10 @@
             </div>
             <div class="col-lg-6">
                 <h5 class="section-title ff-secondary text-start text-primary fw-normal">Perros</h5>
-                <h1 class="mb-4">Bienvenido a <i class="fa fa-paw me-3 text-primary me-2"></i>PerriPapitos</h1>
-                <p class="mb-4">PerriPapitos es una fundacion sin fines de lucro, para ayudar a los
-                    perritos que viven en la calle o que han sido abandonados
-                    por sus dueños, y no tienen donde comer, dormir, y tampoco tengan un hogar que les otorgue el cariño que merecen.
-                </p>
+                <h1 class="mb-4">Bienvenido a <i></i>Talleres Municipalidad</h1>
+                <p class="mb-4">Aquí podrás encontrar tus talleres favoritos por parte de la municipalidad para los Adultos mayores como tú       </p>
 
-                <div class="row g-4 mb-4">
+                <!-- div class="row g-4 mb-4">
                     <div class="col-sm-6">
                         <div class="d-flex align-items-center border-start border-5 border-primary px-3">
                             <h1 class="flex-shrink-0 display-5 text-primary mb-0" data-toggle="counter-up">10</h1>
@@ -95,7 +92,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div-->
             </div>
         </div>
     </div>
@@ -107,8 +104,8 @@
 <div class="container-xxl py-5">
     <div class="container">
         <div class="text-center">
-            <h5 class="section-title ff-secondary text-center text-primary fw-normal">Productos</h5>
-            <h1 class="mb-5">PerriProductos Populares</h1>
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">Talleres</h5>
+            <h1 class="mb-5">Talleres Populares</h1>
         </div>
         <div class="row g-3">
 
@@ -126,8 +123,8 @@
                         {% endif %}
                     </div>
                     <h5 class="mb-0">{{ aux.Nombre }}</h5>
-                    <p>Stock: {{ aux.Stock }}</p>
-                    <small>${{ aux.precio }}</small>
+                    <!-- p>Stock: {{ aux.Stock }}</p-->
+                    <!-- small>${{ aux.precio }}</small-->
                     <!--<a href="" onclick="eliminarProducto({{ aux.id }})" "{% url 'delete' aux.id %}","{% url 'update' aux.id %}"-->
                     <div class="d-flex justify-content-center mt-3">
                         {% for group in user.groups.all %}
@@ -154,10 +151,10 @@
                             <input type="hidden" name="producto_id" value="{{ aux.id }}">
                             <input type="hidden" name="items" value="1">
                             <input type="hidden" name="nombre_producto" id="nombre_producto" value="{{ aux.Nombre }}">
-                            <input type="hidden" name="precio_producto" id="precio_producto" value="{{ aux.precio }}">
+                            <!-- input type="hidden" name="precio_producto" id="precio_producto" value="{{ aux.precio }}"-->
                             <input type="hidden" name="imagen_producto" id="imagen_producto" value="{{ aux.imagen }}">
                             {% if user.is_authenticated %}
-                            <input type="submit" style="cursor: pointer;" value="carrito" class="btn btn-primary nav-item ">
+                            <input type="submit" style="cursor: pointer;" value="Postular" class="btn btn-primary nav-item ">
                             {% else %}
                             <a onclick="NoIniciado()" type="submit" style="cursor: pointer;" value="Carrito" class="btn btn-primary">Carrito </a>
                             {% endif %}
@@ -182,7 +179,7 @@
 
 
 <!-- Testimonial Start -->
-<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+<!-- div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
     <div class="container">
         <div class="text-center">
             <h5 class="section-title ff-secondary text-center text-primary fw-normal">Comentarios</h5>
@@ -241,7 +238,7 @@
             </div>
         </div>
     </div>
-</div>
+</div-->
 <!-- Testimonial End -->
 
 

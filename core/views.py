@@ -13,6 +13,9 @@ from decimal import Decimal
 from django.http import HttpResponse
 from django.db import transaction
 from .forms import SeguimientoPedidoForm
+from .forms import PostulacionForm
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 
 #FUNCION GENERICA QUE VALIDA EL GRUPO DEL USUARIO
 def grupo_requerido(nombre_grupo):
@@ -163,17 +166,38 @@ def delete(request,id):
 
 
 
+def InscripcionTalleres(request, id=None):
+    # Utiliza get_object_or_404 para obtener el objeto relacionado con el ID, si existe
+    postulacion_instance = get_object_or_404(PostulacionTalleres, id=id) if id else None
+    
+    data = {
+        'form': PostulacionForm(instance=postulacion_instance) if postulacion_instance else PostulacionForm(),
+        'id': id,
+    }
+
+    if request.method == 'POST':
+        formulario = PostulacionForm(request.POST, files=request.FILES, instance=postulacion_instance)
+        if formulario.is_valid():
+            postulacion = formulario.save()
+            messages.success(request, "Producto almacenado correctamente")
+
+            # Puedes acceder al ID después de guardar el formulario
+            id_guardado = postulacion.id
+            # Realiza cualquier acción adicional con el ID guardado
+            # Agrega la URL con el id_guardado al contexto
+            data['agregar_al_carrito_url'] = reverse('agregar_al_carrito', args=[id_guardado])
+            
+            
+    return render(request, 'core/InscTalleres.html', data)
+
 @grupo_requerido('cliente')
 def agregar_al_carrito(request, producto_id):
     # Obtener el usuario actualmente autenticado
     usuario = request.user
-    
     # Obtener el producto utilizando su ID
     producto = Producto.objects.get(id=producto_id)
-    
     # Verificar si el producto ya está en el carrito del usuario
     carrito_existente = item_carrito.objects.filter(usuario=usuario, producto=producto).first()
-    
     if carrito_existente:
         # Si el producto ya está en el carrito, se incrementa la cantidad
         carrito_existente.items += 1
@@ -185,7 +209,6 @@ def agregar_al_carrito(request, producto_id):
     # Actualizar el stock del producto
     producto.Stock -= 1
     producto.save()
-    
     # Retornar un mensaje de éxito
     return redirect(request.META['HTTP_REFERER'])
 
@@ -220,6 +243,7 @@ def actualizar_carrito(request):
         return redirect(request.META['HTTP_REFERER'])
 
     return redirect('core/Carrito.html') 
+
 
 @grupo_requerido('cliente')
 def Carrito(request):
@@ -457,7 +481,10 @@ def FinalSuscripcion(request):
 
     return render(request,'core/index.html')    
 
-        
+def InscTalleres(request):
+    return render(request,'core/InscTalleres.html')
+
+
 
 def Pagar_suscripcion(request):
 

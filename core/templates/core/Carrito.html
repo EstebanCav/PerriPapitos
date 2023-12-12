@@ -2,10 +2,10 @@
 {% load static %}
 {% block nav %}
 <a href="{% url 'index' %}" class="nav-item nav-link ">Inicio</a>
-<a href="{% url 'team' %}" class="nav-item nav-link ">Productos</a>
+<a href="{% url 'team' %}" class="nav-item nav-link ">TALLERES</a>
 {% for group in user.groups.all %}
         {% if group.name == 'cliente' %}
-<a href="{% url 'historial' %}" class="nav-item nav-link">Historial de compra</a>
+<!--a href="{% url 'historial' %}" class="nav-item nav-link">Historial de compra</a-->
         {% endif %}
     {% endfor %}
 {% for group in user.groups.all %}
@@ -14,7 +14,7 @@
     {% endif %}
 {% endfor %}
 {% if user.is_authenticated %}
-<a href="{% url 'Carrito' %}" class=" nav-item nav-link active"><i class="fa fa-shopping-cart "></i></a>
+<a href="{% url 'Carrito' %}" class=" nav-item nav-link active"><!--i class="fa fa-shopping-cart "></i--> POSTULACIONES</a>
 {% else %}
 <a onclick="NoIniciado()" class=" nav-item nav-link"><i class="fa fa-shopping-cart "></i></a>
 {% endif %}
@@ -26,12 +26,12 @@
 
 <div class="container-xxl py-5 bg-dark hero-header mb-5">
     <div class="container text-center my-5 pt-5 pb-4">
-        <h1 class="display-3 text-white mb-3 animated slideInDown">Carrito</h1>
+        <h1 class="display-3 text-white mb-3 animated slideInDown">POSTULACIONES</h1>
     </div>
 </div>
 <div class="container">
     <div class="row g-3">
-        <h3>Aplicando descuento de : {{ descuento }}%</p></h3>
+   <!-- h3>Aplicando descuento de : {{ descuento }}%</p></h3-->
 {% for item in items %}
     <div class="col-lg-4 col-md-6">
         <div class="card" style="height: 500px;">
@@ -45,23 +45,15 @@
             <div class="card-body">
                 <h4>{{ item.producto.Nombre }}</h4>
                 
-                <li>Precio por unidad: ${{ item.producto.precio }}</li>
-                <li>Precio Total: ${{ item.precio_total }}</li>
                 <form method="POST" action="{% url 'actualizar_carrito' %}">
                     {% csrf_token %}
                     <input type="hidden" name="item_id" value="{{ item.id }}">
                     <div class="form-group">
-                        <label for="cantidad">Cantidad:</label>
-                        <input type="number" name="cantidad" id="cantidad" min="1" value="{{ item.items }}">
                     </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-arrow-clockwise me-2"></i> Actualizar
-                      </button>
-                      
+            
                 </form>
-            </div>
-            <a onclick="eliminarCarro({{ item.id }})" class="btn btn-primary">ELIMINAR</a>
-        </div>
+            </div>       
+         </div>
     </div>
 {% empty %}
     <div class="col-lg-12 text-center">
@@ -74,14 +66,9 @@
 <br>
 <div class="col-lg-6">
     <div class="pagar-item">
-        <h3>Precio Total con Descuento: ${{ precio_total_descuento }}</h3>
-        <h5>Precio Total: ${{ precio_total }}</h5>
         
-
-
         
         {% if items %}
-        <form method="POST" action=""  ><a href=" {% url 'Pagar' %} " class="btn btn-primary py-sm-3 px-sm-5 me-3">Información de pago</a></form>
         {% else %}
         <form method="POST" action=""  ><a onclick="NoCarrito()" class="btn btn-primary py-sm-3 px-sm-5 me-3">Información de pago</a></form>
 

@@ -91,5 +91,9 @@ class Suscripcion(models.Model):
 
     def __str__(self):
         return self.usuario.username
+class PostulacionTalleres(models.Model):
+    idtalleres = models.IntegerField(blank=True, null=True)
+    nombre = models.CharField(max_length=70)
+    edad = models.IntegerField(blank=True, null=True)
 
 

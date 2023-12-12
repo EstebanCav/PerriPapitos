@@ -40,6 +40,8 @@ urlpatterns = [
     path('addSuscripcion/<id>/', addSuscripcion, name='addSuscripcion'),
     path('deleteSuscripcion/<id>/', deleteSuscripcion, name='deleteSuscripcion'),
     path('updateSuscripcion/<id>/',updateSuscripcion,name='updateSuscripcion'),
+    path('InscTalleres/<id>/',InscTalleres,name='InscTalleres'),
+    
 
 
 
